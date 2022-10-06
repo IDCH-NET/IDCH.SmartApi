@@ -6,7 +6,8 @@ namespace TestApi
     public partial class Form1 : Form
     {
         string FileSelect = string.Empty;
-        string BaseUrl = "https://localhost:7110";
+        //string BaseUrl = "https://localhost:7110";
+        string BaseUrl = "https://smartapi.my.id";
         public Form1()
         {
             InitializeComponent();

@@ -133,7 +133,7 @@ namespace IDCH.SmartApi
                 });
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseAuthentication();
             app.UseAuthorization();
