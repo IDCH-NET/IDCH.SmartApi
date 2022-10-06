@@ -23,8 +23,22 @@ namespace Models.Yolo
             this.blob = blob;
         }
         static readonly string[] classesNames = new string[] { "person", "bicycle", "car", "motorbike", "aeroplane", "bus", "train", "truck", "boat", "traffic light", "fire hydrant", "stop sign", "parking meter", "bench", "bird", "cat", "dog", "horse", "sheep", "cow", "elephant", "bear", "zebra", "giraffe", "backpack", "umbrella", "handbag", "tie", "suitcase", "frisbee", "skis", "snowboard", "sports ball", "kite", "baseball bat", "baseball glove", "skateboard", "surfboard", "tennis racket", "bottle", "wine glass", "cup", "fork", "knife", "spoon", "bowl", "banana", "apple", "sandwich", "orange", "broccoli", "carrot", "hot dog", "pizza", "donut", "cake", "chair", "sofa", "pottedplant", "bed", "diningtable", "toilet", "tvmonitor", "laptop", "mouse", "remote", "keyboard", "cell phone", "microwave", "oven", "toaster", "sink", "refrigerator", "book", "clock", "vase", "scissors", "teddy bear", "hair drier", "toothbrush" };
+
+        static List<Color> ColorLabels = new();
+        static List<Pen> PenLabels = new();
         public async Task< OutputCls> Predict(byte[] ImageData)
         {
+            if (ColorLabels.Count <= 0)
+            {
+                var rnd = new Random(Environment.TickCount);
+                for(var i = 0; i<classesNames.Length; i++)
+                {
+                    Color randomColor = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
+                    ColorLabels.Add(randomColor);
+                    var pen = new Pen(randomColor,2);
+                    PenLabels.Add(pen);
+                }
+            }
             var output = new OutputCls() { IsSucceed = false };
             try
             {
@@ -85,8 +99,10 @@ namespace Models.Yolo
                             var y1 = res.BBox[1];
                             var x2 = res.BBox[2];
                             var y2 = res.BBox[3];
-                            g.DrawRectangle(Pens.Red, x1, y1, x2 - x1, y2 - y1);
-                            using (var brushes = new SolidBrush(Color.FromArgb(50, Color.Red)))
+                            var index = Array.FindIndex(classesNames, row => row.Contains(res.Label));
+                            g.DrawRectangle(PenLabels[index], x1, y1, x2 - x1, y2 - y1);
+                           
+                            using (var brushes = new SolidBrush(Color.FromArgb(50, ColorLabels[index])))
                             {
                                 g.FillRectangle(brushes, x1, y1, x2 - x1, y2 - y1);
                             }

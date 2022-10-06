@@ -1,6 +1,10 @@
 using Newtonsoft.Json;
+using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Windows.Forms;
 
 namespace TestApi
 {
@@ -34,20 +38,35 @@ namespace TestApi
                 try
                 {
                     using var client = new HttpClient();
-                    client.Timeout = TimeSpan.FromMinutes(2);
+                    //client.Timeout = TimeSpan.FromMinutes(2);
 
                     using var formData = new MultipartFormDataContent();
                     await using var file = File.OpenRead(FileSelect);
                     var streamContent = new StreamContent(file);
                     formData.Add(streamContent, "file", Path.GetFileName(FileSelect));
-
+                    //content.Add(fileContent, "file", Path.GetFileName(FileSelect));
+                    /*
+                    var content = new MultipartFormDataContent();
+                    var file = new MemoryStream(File.ReadAllBytes(FileSelect));
+                    var fileContent = new StreamContent(file);
+                    fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse($"image/{Path.GetExtension(FileSelect).Replace(".","")}");
+                    var filenameOnly = Path.GetFileNameWithoutExtension(FileSelect);
+                    var fileName = Path.GetFileName(FileSelect);
+                    fileContent.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("form-data")
+                    {
+                        Name = $"files[{filenameOnly}]",
+                        FileName = fileName
+                    };
+                    content.Add(fileContent, $"files[{filenameOnly}]");
+                    */
                     var response = await client.PostAsync($"{BaseUrl}/api/Model/DetectObject",
                         formData);
                     TxtInfo.Clear();
                     if (response.IsSuccessStatusCode)
                     {
                         var data = await response.Content.ReadAsStringAsync();
-                        var output = JsonConvert.DeserializeObject<OutputCls>(data);
+                        var setting = new JsonSerializerSettings() { Formatting = Formatting.Indented };
+                        var output = JsonConvert.DeserializeObject<OutputCls>(data,setting);
                         TxtInfo.Text = data;
                         foreach(var filestr in output.FileUrls)
                         {

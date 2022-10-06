@@ -85,7 +85,7 @@ namespace IDCH.SmartApi
             {
                 Version = "v1",
                 Title = "Smart API v1.0",
-                Description = "API for accessing Smart Api",
+                Description = "Cognitive Machine Learning API, free api for creating smart app",
                 TermsOfService = new Uri("https://gravicode.com/terms.html"),
                 Contact = contact,
                 License = license
@@ -174,9 +174,8 @@ namespace IDCH.SmartApi
                 return forecast;
             })
             .WithName("GetWeatherForecast");
-
-            app.MapPost("/detectobject",
-
+            /*
+            app.MapPost("/detectobject",      
        async Task<IResult> (HttpRequest request, YoloModel yolo) =>
        {
            if (!request.HasFormContentType)
@@ -209,7 +208,7 @@ namespace IDCH.SmartApi
            return Results.Ok(res);
        })
             .WithName("DetectObject"); 
-            
+            */
           
             app.MapPost("/security/getToken", [AllowAnonymous] (UserDto user) =>
             {
