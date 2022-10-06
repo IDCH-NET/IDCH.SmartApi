@@ -1,13 +1,14 @@
 using Newtonsoft.Json;
 using System.Net;
+using System.Net.Http;
 
 namespace TestApi
 {
     public partial class Form1 : Form
     {
         string FileSelect = string.Empty;
-        //string BaseUrl = "https://localhost:7110";
-        string BaseUrl = "https://smartapi.my.id";
+        string BaseUrl = "https://localhost:7110";
+        //string BaseUrl = "https://smartapi.my.id";
         public Form1()
         {
             InitializeComponent();
@@ -33,13 +34,14 @@ namespace TestApi
                 try
                 {
                     using var client = new HttpClient();
+                    client.Timeout = TimeSpan.FromMinutes(2);
 
                     using var formData = new MultipartFormDataContent();
                     await using var file = File.OpenRead(FileSelect);
                     var streamContent = new StreamContent(file);
                     formData.Add(streamContent, "file", Path.GetFileName(FileSelect));
 
-                    var response = await client.PostAsync($"{BaseUrl}/detectobject",
+                    var response = await client.PostAsync($"{BaseUrl}/api/Model/DetectObject",
                         formData);
                     TxtInfo.Clear();
                     if (response.IsSuccessStatusCode)

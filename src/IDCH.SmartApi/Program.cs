@@ -176,6 +176,7 @@ namespace IDCH.SmartApi
             .WithName("GetWeatherForecast");
 
             app.MapPost("/detectobject",
+
        async Task<IResult> (HttpRequest request, YoloModel yolo) =>
        {
            if (!request.HasFormContentType)
@@ -207,7 +208,9 @@ namespace IDCH.SmartApi
            }
            return Results.Ok(res);
        })
-            .WithName("DetectObject");
+            .WithName("DetectObject"); 
+            
+          
             app.MapPost("/security/getToken", [AllowAnonymous] (UserDto user) =>
             {
 
