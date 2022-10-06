@@ -148,6 +148,8 @@ namespace IDCH.SmartApi
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
             app.UseCors(x => x
             .AllowAnyMethod()
             .AllowAnyHeader()

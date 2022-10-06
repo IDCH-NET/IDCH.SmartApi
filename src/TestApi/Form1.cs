@@ -11,8 +11,8 @@ namespace TestApi
     public partial class Form1 : Form
     {
         string FileSelect = string.Empty;
-        string BaseUrl = "https://localhost:7110";
-        //string BaseUrl = "https://smartapi.my.id";
+        //string BaseUrl = "https://localhost:7110";
+        string BaseUrl = "https://smartapi.my.id";
         public Form1()
         {
             InitializeComponent();
@@ -27,6 +27,10 @@ namespace TestApi
                     // image file path  
                     FileSelect = open.FileName;
                 }
+            };
+            BtnClear.Click += (a, b) => {
+                Pic2.Image = null;
+                TxtInfo.Clear();
             };
             BtnDetect.Click += async(a, b) => {
 

@@ -33,6 +33,7 @@
             this.Pic2 = new System.Windows.Forms.PictureBox();
             this.BtnDetect = new System.Windows.Forms.Button();
             this.TxtInfo = new System.Windows.Forms.RichTextBox();
+            this.BtnClear = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.Pic1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Pic2)).BeginInit();
             this.SuspendLayout();
@@ -83,11 +84,21 @@
             this.TxtInfo.TabIndex = 4;
             this.TxtInfo.Text = "";
             // 
+            // BtnClear
+            // 
+            this.BtnClear.Location = new System.Drawing.Point(223, 291);
+            this.BtnClear.Name = "BtnClear";
+            this.BtnClear.Size = new System.Drawing.Size(124, 23);
+            this.BtnClear.TabIndex = 5;
+            this.BtnClear.Text = "&Clear";
+            this.BtnClear.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.BtnClear);
             this.Controls.Add(this.TxtInfo);
             this.Controls.Add(this.BtnDetect);
             this.Controls.Add(this.Pic2);
@@ -108,5 +119,6 @@
         private PictureBox Pic2;
         private Button BtnDetect;
         private RichTextBox TxtInfo;
+        private Button BtnClear;
     }
 }
