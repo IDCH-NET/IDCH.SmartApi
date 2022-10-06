@@ -38,7 +38,7 @@ namespace TestApi
                 try
                 {
                     using var client = new HttpClient();
-                    //client.Timeout = TimeSpan.FromMinutes(2);
+                    client.Timeout = TimeSpan.FromMinutes(2);
 
                     using var formData = new MultipartFormDataContent();
                     await using var file = File.OpenRead(FileSelect);

@@ -90,7 +90,7 @@ namespace Models.Yolo
                     var predict = predictionEngine.Predict(new YoloV4BitmapData() { Image = bitmap });
                     var results = predict.GetResults(classesNames, 0.3f, 0.7f);
                     var ListResult = new List<dynamic>();
-                    //using (var g = Graphics.FromImage(bitmap))
+                    using (var g = Graphics.FromImage(bitmap))
                     {
                     
                         var captions = new List<string>();
@@ -106,8 +106,8 @@ namespace Models.Yolo
                             rects.Add(new Rectangle(Convert.ToInt32(x1), Convert.ToInt32(y1), Convert.ToInt32(x2 - x1), Convert.ToInt32(y2 - y1)));
                             captions.Add($"{res.Label}:{res.Confidence.ToString("n2")}");
                       
-                            //g.DrawRectangle(PenLabels[index], x1, y1, x2 - x1, y2 - y1);
-                            /*
+                            g.DrawRectangle(PenLabels[index], x1, y1, x2 - x1, y2 - y1);
+                            
                             using (var brushes = new SolidBrush(Color.FromArgb(50, ColorLabels[index])))
                             {
                                 g.FillRectangle(brushes, x1, y1, x2 - x1, y2 - y1);
@@ -115,18 +115,20 @@ namespace Models.Yolo
 
                             g.DrawString(res.Label + " " + res.Confidence.ToString("0.00"),
                                          new Font("Arial", 12), Brushes.Blue, new PointF(x1, y1));
-                            */
+                            
                             dynamic hasil = new ExpandoObject();
                             hasil.confidence = res.Confidence;
                             hasil.label = res.Label;
                             hasil.pos = new float[] { x1, y1, x2 - x1, y2 - y1 };
                             ListResult.Add(hasil);
                         }
-                        var img = ImageHelper.DrawBoxes(rects, captions, ImageData, "");
+                        //var img = ImageHelper.DrawBoxes(rects, captions, ImageData, "");
                         output.Data = ListResult;
                         var rand = NumberGen.GenerateNumber(5);
                         var fname = $"img_{DateTime.Now.ToString("ddMMyyyy")}_{rand}.png";
-                        var resupload = await blob.UploadFile(fname, img);
+                        var datastream = new MemoryStream();
+                        bitmap.Save(datastream, ImageFormat.Png);
+                        var resupload = await blob.UploadFile(fname, datastream.ToArray());
                         if (resupload)
                             output.FileUrls.Add(fname);
                         output.IsSucceed = true;
